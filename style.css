@@ -1,0 +1,31 @@
+.rectangle{
+	stroke: black;
+	stroke-width: 1px;
+	fill: white;
+}
+.chemin{
+	stroke: blue;
+	stroke-width: 2px;
+	fill: transparent;
+}
+.cheminFond{
+	stroke: transparent;
+	stroke-width: 0;
+	fill: green;
+}
+.cercle{
+	stroke: blue;
+	stroke-width: 3px;
+	fill: white;
+}
+.cercle:hover{
+	stroke-width: 5px;
+}
+.text{
+	font-size: 14px;
+	font-family: "Arial", Trebuchet MS, Helvetica Neue,Arial,sans-serif;
+}
+.ligneFond{
+	stroke: #CCC;
+	stroke-width: 1px;
+}
