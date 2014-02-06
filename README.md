@@ -1,4 +1,4 @@
 SVGPHPGraphGenerator
 ====================
 
-SVG Graphic generator in PHP
+Générateur de graphiques SVG en PHP.
