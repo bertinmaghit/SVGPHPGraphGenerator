@@ -1,23 +1,21 @@
 <?php
 class graph
 {
-	protected $largeur, $hauteur, $data = array();
+	protected $largeur, $hauteur, $data = array(), $basZero;
 
-	public function __construct($largeur, $hauteur, $data)
+	public function __construct($largeur, $hauteur, $data, $basZero = false)
 	{
-		if($this->verifErreurNumerique())
-		{
-			throw new Exception("Une valeur non numérique a été trouvée dans les données", 1);
-		}
-		if(!is_numeric($largeur) || !is_numeric($hauteur)){ throw new Exception("Une valeur non numérique a été trouvée dans les dimensions", 1); }
-
 		$this->largeur = $largeur;
 		$this->hauteur = $hauteur;
 		$this->data = $data;
+		$this->basZero = $basZero;
 	}
 
 	public function graphLignes()
 	{
+		$verifErreur = $this->verifErreur();
+		if($verifErreur != 'ok'){ return $verifErreur; }
+
 		$margeGauche = 70;
 		$margeBas = 50;
 		$maxY = $this->calculValeurYMax();
@@ -32,8 +30,9 @@ class graph
 
 		//Lignes horizontales :
 		for ($i = 1; $i < $nombreLignesHorizontal; $i++) { 
-			$val = ($i*($maxY-$minY))/$nombreLignesHorizontal;
-			$val += $minY; $val = round($val);
+			if(!$this->basZero){ $val = ($i*($maxY-$minY))/$nombreLignesHorizontal; $val += $minY; }
+			else{ $val = ($i*$maxY)/$nombreLignesHorizontal; }
+			$val = round($val);
 			$result .= '<text x="'.($margeGauche-5).'" y="'.($this->calculPositionY($val, $margeBas)+12).'" text-anchor="end" class="text">'.$val.'</text>';
 			$result .= '<line x1="'.$margeGauche.'" x2="'.$this->largeur.'" y1="'.($this->calculPositionY($val, $margeBas)).'" y2="'.$this->calculPositionY($val, $margeBas).'" class="ligneFond"/>';
 		}
@@ -82,9 +81,23 @@ class graph
 		return $result;
 	}
 
+	private function verifErreur()
+	{
+		$erreur = false;
+		$msg = '';
+		if(count($this->data) == 0){ $msg .= "Vos donnees sont vides<br/>"; $erreur = true; }
+		if($this->verifErreurNumerique()){ $msg .= "Vos donnees ne sont pas toutes numeriques : <br/>"; $erreur = true; }
+		if(!is_numeric($this->largeur) || !is_numeric($this->hauteur)){ $msg .= "La largeur ou la hauteur de votre graphique ne sont pas numerique<br/>"; $erreur = true; }
+	
+		if(!$erreur){ return "ok"; }
+		else{ return json_encode(array('erreur' => true, 'msg' => $msg, 'data' => $this->data)); }
+	}
+
 	private function calculPositionY($valeur, $margeBas)
 	{
-		return $this->hauteur - $margeBas - (($valeur-$this->calculValeurYMin())*($this->hauteur - $margeBas))/($this->calculValeurYMax()-$this->calculValeurYMin());
+		//Début axe y à zéro ou à la valeur min des données
+		if($this->basZero){ return $this->hauteur - $margeBas - ((($this->hauteur - $margeBas)*$valeur)/$this->calculValeurYMax()); }
+		else{ return $this->hauteur - $margeBas - (($valeur-$this->calculValeurYMin())*($this->hauteur - $margeBas))/($this->calculValeurYMax()-$this->calculValeurYMin()); }
 	}
 
 	private function calculValeurYMax()
