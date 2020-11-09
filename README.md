@@ -5,7 +5,7 @@ Générateur de graphiques SVG en PHP.
 
 ### Exemples de résultats :
 
-####Résultat de l'exemple simple :
+#### Résultat de l'exemple simple :
 
 ![alt t](https://github.com/MaxyFR/SVGPHPGraphGenerator/blob/master/screens/exempleSimple.png?raw=true)
 
