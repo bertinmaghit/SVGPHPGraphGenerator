@@ -25,7 +25,7 @@ class graph
 		$nombreLignesHorizontal = 10;
 		$this->ecartColonnes = ($this->largeur-$this->margeGauche)/(count($this->data)-1);
 
-		$result = '<svg style="width:'.$this->largeur.'; height:'.$this->hauteur.';">';
+		$result = '<svg style="width:'.$this->largeur.'px; height:'.$this->hauteur.'px;">';
 
 		//Rectangle :
 		$result .= '<rect x="'.$this->margeGauche.'" y="0" width="'.($this->largeur-$this->margeGauche).'" height="'.($this->hauteur-$this->margeBas).'" class="rectangle"/>';
