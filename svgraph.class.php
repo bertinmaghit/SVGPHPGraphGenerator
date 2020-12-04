@@ -123,7 +123,9 @@ class graph
 	{
 		//Début axe y à zéro ou à la valeur min des données
 		if($this->basZero){ return $this->hauteur - $this->margeBas - ((($this->hauteur - $this->margeBas)*$valeur)/$this->calculValeurYMax()); }
-		else{ return $this->hauteur - $this->margeBas - (($valeur-$this->calculValeurYMin())*($this->hauteur - $this->margeBas))/($this->calculValeurYMax()-$this->calculValeurYMin()); }
+		elseif (($this->calculValeurYMax()-$this->calculValeurYMin()) == 0){
+		    return $this->hauteur - $this->margeBas - (($valeur-$this->calculValeurYMin())*($this->hauteur - $this->margeBas))/1; }
+		else {return $this->hauteur - $this->margeBas - (($valeur-$this->calculValeurYMin())*($this->hauteur - $this->margeBas))/($this->calculValeurYMax()-$this->calculValeurYMin()); }
 	}
 
 	private function calculValeurYMax()
